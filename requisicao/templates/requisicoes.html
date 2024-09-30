@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}
+| Grupo Golden Sat |
+{% endblock %}
+
+{% include 'components/_header.html' %}
+{% block content %}
+<style>
+    .card-status {
+        position: relative;
+        transition: transform 0.3s ease; /* Adiciona uma transição suave */
+    }
+
+    .card-status.Aprovado {
+        background: linear-gradient(to bottom, #a0f0a0 0%, #ffffff 100%); /* Gradiente verde claro para branco */
+    }
+
+    .card-status.Reprovado {
+        background: linear-gradient(to bottom, #f0a0a0 0%, #ffffff 100%); /* Gradiente vermelho claro para branco */
+    }
+
+    .card-status.Pendente {
+        background: linear-gradient(to bottom, #d0d0d0 0%, #ffffff 100%); /* Gradiente cinza claro para branco */
+    }
+
+    .card-status.Configurado {
+        background: linear-gradient(to bottom, #ffd580 0%, #ffffff 100%); /* Gradiente laranja claro para branco */
+    }
+
+    .card-status.Reprovado-pelo-CEO {
+        background: linear-gradient(to bottom, #f08080 0%, #ffffff 100%); /* Gradiente vermelho claro para branco */
+    }
+
+    .card-status.Aprovado-pelo-CEO {
+        background: linear-gradient(to bottom, #80f080 0%, #ffffff 100%); /* Gradiente verde claro para branco */
+    }
+
+    .card-status.Reprovado-pela-Diretoria {
+        background: linear-gradient(to bottom, #f08080 0%, #ffffff 100%); /* Gradiente vermelho claro para branco */
+    }
+
+    .card-status.Aprovado-pela-Diretoria {
+        background: linear-gradient(to bottom, #80f080 0%, #ffffff 100%); /* Gradiente verde claro para branco */
+    }
+
+    .card-status.Expedido {
+        background: linear-gradient(to bottom, #ffb380 0%, #ffffff 100%); /* Gradiente laranja escuro claro para branco */
+    }
+
+    .card-status.Enviado-para-o-Cliente {
+        background: linear-gradient(to bottom, #80b3ff 0%, #ffffff 100%); /* Gradiente azul claro para branco */
+    }
+
+    .card-status.Aprovado-Inteligencia {
+        background: linear-gradient(to bottom, #80f080 0%, #ffffff 100%); /* Gradiente verde claro para branco */
+    }
+
+    .card-body {
+        padding: 30px; /* Adiciona um espaço interno de 30px */
+    }
+
+    .card-status:hover {
+        transform: scale(1.05); /* Faz o card crescer um pouco */
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-primary" href="{% url 'requisicoescrateview' %}">Criar Requisição</a>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for requisicao in requisicoes %}
+        <div class="col-md-4 mb-4">
+            <div class="card card-status {% if requisicao.status == 'Aprovado' %}Aprovado{% elif requisicao.status == 'Reprovado' %}Reprovado{% elif requisicao.status == 'Configurado' %}Configurado{% elif requisicao.status == 'Pendente' %}Pendente{% elif requisicao.status == 'Expedido' %}Expedido{% elif requisicao.status == 'Reprovado pelo CEO' %}Reprovado-pelo-CEO{% elif requisicao.status == 'Aprovado pelo CEO' %}Aprovado-pelo-CEO{% elif requisicao.status == 'Reprovado pela Diretoria' %}Reprovado-pela-Diretoria{% elif requisicao.status == 'Aprovado pela Diretoria' %}Aprovado-pela-Diretoria{% endif %}">
+                <div class="card-body">
+                    <h2>Requisição</h2>
+                    <h5 class="card-title">Registro #{{ requisicao.id }}</h5>
+                    <h5 class="card-title">Nome : {{ requisicao.nome }}</h5>
+                    <p class="card-text"><b>Status:</b> {{ requisicao.status }}</p>
+                    <p class="card-text"><b>Endereço:</b> {{ requisicao.endereco }}</p>
+                    <p class="card-text"><b>Contrato:</b> {{ requisicao.contrato }}</p>
+                    <p class="card-text"><b>CNPJ:</b> {{ requisicao.cnpj }}</p>
+                    <p class="card-text"><b>Início do Contrato:</b> {{ requisicao.inicio_de_contrato|date:"d/m/Y" }}</p>
+                    <p class="card-text"><b>Vigência:</b> {{ requisicao.vigencia|date:"d/m/Y" }}</p>
+                    <p class="card-text"><b>Data:</b> {{ requisicao.data|date:"d/m/Y" }}</p>
+                    <p class="card-text"><b>Motivo:</b> {{ requisicao.motivo }}</p>
+                    <p class="card-text"><b>Envio:</b> {{ requisicao.envio }}</p>
+                    <p class="card-text"><b>Taxa de Envio:</b> {{ requisicao.taxa_envio }}</p>
+                    <p class="card-text"><b>Comercial:</b> {{ requisicao.comercial }}</p>
+                    <p class="card-text"><b>Tipo de Produto:</b> {{ requisicao.tipo_produto }}</p>
+                    <p class="card-text"><b>Carregador:</b> {{ requisicao.carregador }}</p>
+                    <p class="card-text"><b>Cabo:</b> {{ requisicao.cabo }}</p>
+                    <p class="card-text"><b>Tipo de Fatura:</b> {{ requisicao.tipo_fatura }}</p>
+                    <p class="card-text"><b>Valor Unitário:</b> {{ requisicao.valor_unitario }}</p>
+                    <p class="card-text"><b>Valor Total:</b> {{ requisicao.valor_total }}</p>
+                    <p class="card-text"><b>Formas de Pagamento:</b> {{ requisicao.forma_pagamento }}</p>
+                    <p class="card-text"><b>Observações:</b> {{ requisicao.observacoes }}</p>
+                    <p class="card-text"><b>TP:</b> {{ requisicao.TP }}</p>
+                    <p class="card-text"><b>ID Equipamentos:</b> {{ requisicao.id_equipamentos }}</p>
+                    <!-- Outros detalhes do card -->
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% include 'components/_pagination.html' %}
+</div>
+{% endblock %}

@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block title %}
+| Grupo Golden Sat |
+{% endblock %}
+
+{% include 'components/_header.html' %}
+{% block content %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    body {
+        background-color: #45494E; /* Cor de fundo mais escura */
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+    }
+    .container-fluid {
+        padding: 0;
+    }
+    .row {
+        margin: 0;
+    }
+    .table-responsive {
+        padding: 0 15px;
+        margin-left: -55vh;
+        width: 160rem;
+    }
+    .form-control {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .dropdown-status {
+        width: 10rem; /* Ajuste a largura conforme necessário */
+    }
+    .filter-container {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0rem; /* Aumente o espaçamento entre os campos */
+    }
+    .thead-dark {
+        background-color: #344038; /* Substitua pelo valor exato da cor da sua barra de navegação */
+        color: white;
+    }
+
+    .status-aprovado {
+        background: linear-gradient(to bottom, #0bf30b 0%, #ffffff 100%);
+    }
+
+    .status-reprovado {
+        background: linear-gradient(to bottom, #f55dc2 0%, #ffffff 100%);
+    }
+
+    .status-pendente {
+        background: linear-gradient(to bottom, #f5ff69 0%, #ffffff 100%);
+    }
+
+    .status-configurado {
+        background: linear-gradient(to bottom, #ffd700 0%, #ffffff 100%);
+    }
+
+    .status-reprovado-ceo {
+        background: linear-gradient(to bottom, #ff4500 0%, #ffffff 100%);
+    }
+
+    .status-aprovado-ceo {
+        background: linear-gradient(to bottom, #32cd32 0%, #ffffff 100%);
+    }
+
+    .status-reprovado-diretoria {
+        background: linear-gradient(to bottom, #ff6347 0%, #ffffff 100%);
+    }
+
+    .status-aprovado-diretoria {
+        background: linear-gradient(to bottom, #4682b4 0%, #ffffff 100%);
+    }
+
+    .table thead th {
+        background-color: #344038; /* Cor de fundo do cabeçalho */
+        color: white; /* Cor do texto do cabeçalho */
+    }
+
+    .table tbody tr {
+        transition: background-color 0.3s; /* Transição suave para a cor de fundo */
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1; /* Cor de fundo ao passar o mouse */
+    }
+
+    .table td, .table th {
+        vertical-align: middle; /* Alinhamento vertical centralizado */
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="get" action="{% url 'historicoListViews' %}">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="nome" placeholder="Nome" value="{{ request.GET.nome }}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Endereço</th>
+                    <th>Contrato</th>
+                    <th>CNPJ</th>
+                    <th>Início de Contrato</th>
+                    <th>Vigência</th>
+                    <th>Data</th>
+                    <th>Motivo</th>
+                    <th>Envio</th>
+                    <th>Taxa de Envio</th>
+                    <th>Comercial</th>
+                    <th>Tipo de Produto</th>
+                    <th>Carregador</th>
+                    <th>Cabo</th>
+                    <th>Tipo de Fatura</th>
+                    <th>Valor Unitário</th>
+                    <th>Valor Total</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Observações</th>
+                    <th>Status</th>
+                    <th>TP</th>
+                    <th>Status de Faturamento</th>
+                    <th>ID Equipamentos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for requisicao in historico_list %}
+                <tr class="{% if requisicao.status == 'Aprovado' %}status-aprovado{% elif requisicao.status == 'Reprovado' %}status-reprovado{% elif requisicao.status == 'Configurado' %}status-configurado{% elif requisicao.status == 'Pendente' %}status-pendente{% elif requisicao.status == 'Reprovado pelo CEO' %}status-reprovado-ceo{% elif requisicao.status == 'Aprovado pelo CEO' %}status-aprovado-ceo{% elif requisicao.status == 'Reprovado pela Diretoria' %}status-reprovado-diretoria{% elif requisicao.status == 'Aprovado pela Diretoria' %}status-aprovado-diretoria{% endif %}">
+                    <td>{{ requisicao.id }}</td>
+                    <td>{{ requisicao.nome }}</td>
+                    <td>{{ requisicao.endereco }}</td>
+                    <td>{{ requisicao.contrato }}</td>
+                    <td>{{ requisicao.cnpj }}</td>
+                    <td>{{ requisicao.inicio_de_contrato }}</td>
+                    <td>{{ requisicao.vigencia }}</td>
+                    <td>{{ requisicao.data }}</td>
+                    <td>{{ requisicao.motivo }}</td>
+                    <td>{{ requisicao.envio }}</td>
+                    <td>{{ requisicao.taxa_envio }}</td>
+                    <td>{{ requisicao.comercial }}</td>
+                    <td>{{ requisicao.tipo_produto }}</td>
+                    <td>{{ requisicao.carregador }}</td>
+                    <td>{{ requisicao.cabo }}</td>
+                    <td>{{ requisicao.tipo_fatura }}</td>
+                    <td>{{ requisicao.valor_unitario }}</td>
+                    <td>{{ requisicao.valor_total }}</td>
+                    <td>{{ requisicao.forma_pagamento }}</td>
+                    <td>{{ requisicao.observacoes }}</td>
+                    <td>{{ requisicao.status }}</td>
+                    <td>{{ requisicao.TP }}</td>
+                    <td>{{ requisicao.status_faturamento }}</td>
+                    <td>{{ requisicao.id_equipamentos }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% include 'components/_pagination.html' %}
+</div>
+{% endblock %}

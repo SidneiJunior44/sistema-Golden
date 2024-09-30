@@ -1,0 +1,110 @@
+{% extends 'base.html' %}  <!-- Herda o layout base do template 'base.html'. -->
+{% block title %}
+| Grupo Golden Sat |  <!-- Define o título do bloco que será exibido na aba do navegador. -->
+{% endblock %}
+
+{% include 'components/_header.html' %}  <!-- Inclui o cabeçalho do site a partir de um componente separado. -->
+{% block content %}
+<!-- Início do conteúdo principal -->
+
+<style>
+    .card-status {
+        position: relative;
+        transition: transform 0.3s ease; /* Adiciona uma transição suave */
+    }
+
+    .card-status.Aprovado {
+        background: linear-gradient(to bottom, #a0f0a0 0%, #ffffff 100%); /* Gradiente verde claro para branco */
+    }
+
+    .card-status.Reprovado {
+        background: linear-gradient(to bottom, #f0a0a0 0%, #ffffff 100%); /* Gradiente vermelho claro para branco */
+    }
+
+    .card-status.Pendente {
+        background: linear-gradient(to bottom, #d0d0d0 0%, #ffffff 100%); /* Gradiente cinza claro para branco */
+    }
+
+    .card-status.Configurado {
+        background: linear-gradient(to bottom, #ffd580 0%, #ffffff 100%); /* Gradiente laranja claro para branco */
+    }
+
+    .card-status.Reprovado-pelo-CEO {
+        background: linear-gradient(to bottom, #f08080 0%, #ffffff 100%); /* Gradiente vermelho claro para branco */
+    }
+
+    .card-status.Aprovado-pelo-CEO {
+        background: linear-gradient(to bottom, #80f080 0%, #ffffff 100%); /* Gradiente verde claro para branco */
+    }
+
+    .card-status.Reprovado-pela-Diretoria {
+        background: linear-gradient(to bottom, #f08080 0%, #ffffff 100%); /* Gradiente vermelho claro para branco */
+    }
+
+    .card-status.Aprovado-pela-Diretoria {
+        background: linear-gradient(to bottom, #80f080 0%, #ffffff 100%); /* Gradiente verde claro para branco */
+    }
+
+    .card-status.Expedido {
+        background: linear-gradient(to bottom, #ffb380 0%, #ffffff 100%); /* Gradiente laranja escuro claro para branco */
+    }
+
+    .card-status.Enviado-para-o-Cliente {
+        background: linear-gradient(to bottom, #80b3ff 0%, #ffffff 100%); /* Gradiente azul claro para branco */
+    }
+
+    .card-status.Aprovado-Inteligencia {
+        background: linear-gradient(to bottom, #80f080 0%, #ffffff 100%); /* Gradiente verde claro para branco */
+    }
+
+    .card-body {
+        padding: 30px; /* Adiciona um espaço interno de 30px */
+    }
+
+    .card-status:hover {
+        transform: scale(1.05); /* Faz o card crescer um pouco */
+    }
+</style>
+<div class="container mt-4">
+    <a class="btn btn-success" href="{% url 'criar_retorno' %}">Relatorio de Retorno</a>
+    <!-- Início da seção de exibição dos registros -->
+    <div class="row">
+       
+        {% for registro in dasentradas %}
+        <div class="col-md-4 mb-4">
+            <div class="card card-status {% if registro.status == 'Aprovado Inteligência' %}Aprovado_Inteligência{% elif registro.status == 'Reprovado Inteligência' %}Reprovado_Inteligência{% elif registro.status == 'Reprovado' %}Reprovado{% elif registro.status == 'Configurado' %}Configurado{% elif registro.status == 'Pendente' %}Pendente{% elif registro.status == 'Expedido' %}Expedido{% elif registro.status == 'Reprovado pelo CEO' %}Reprovado_pelo_CEO{% elif registro.status == 'Aprovado pelo CEO' %}Aprovado_pelo_CEO{% elif registro.status == 'Reprovado pela Diretoria' %}Reprovado_pela_Diretoria{% elif registro.status == 'Aprovado pela Diretoria' %}Aprovado_pela_Diretoria{% endif %}">
+                <div class="card-body">
+                    <h5 class="card-title">Registro #{{ registro.id }}</h5>
+                    <h5 class="card-title">Nome : {{ registro.nome }}</h5>
+                    <p class="card-text"><b>Status:</b> {{ registro.status }}</p>
+                    <p class="card-text"><b>Tipo de Entrada:</b> {{ registro.tipo_entrada }}</p>
+                    <p class="card-text"><b>Tipo de Produto:</b> {{ registro.tipo_produto }}</p>
+                    <p class="card-text"><b>Customização:</b> {{ registro.customizacao }}</p>
+                    <p class="card-text"><b>Motivo:</b> {{ registro.motivo }}</p>
+                    <p class="card-text"><b>Setor:</b> {{ registro.setor }}</p>
+                    <!-- Botões de ação -->
+                    <a class="btn btn-primary" href="{% url 'FormulariosUpdateView' registro.id %}">Editar</a>
+                    <a class="btn btn-primary" href="{% url 'FormularioDetailView' registro.id %}">Visualizar</a>
+                    <a class="btn btn-success" href="{% url 'Aprovado_Inteligência' registro.id %}">Aprovar</a>
+                    <a class="btn btn-danger" href="{% url 'Reprovado_Inteligência' registro.id %}">Diretoria</a>
+                    <a class="btn btn-info" href="{% url 'download_pdfmanutencao' registro.id %}">Download PDF</a>
+            
+                    {% if registro.has_retorno_images %}
+                    <a class="btn btn-warning" href="{% url 'download_laudo_saida' registro.id %}">Laudo de Saída</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center">Nenhum registro encontrado.</p>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- Fim da seção de exibição dos registros -->
+
+    <!-- Inclui o componente de paginação. -->
+    {% include 'components/_pagination.html' %}
+</div>
+
+{% endblock %}

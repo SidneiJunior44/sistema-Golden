@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h3 class="display-6">Detalhes</h3>
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Nome: {{ registrodemanutencao_detail.nome }}</h3> 
+            <p class="card-text">Tipo de Entrada: {{ registrodemanutencao_detail.tipo_entrada }}</p> 
+            <p class="card-text">Tipo de Produto: {{ registrodemanutencao_detail.tipo_produto }}</p> 
+            <p class="card-text">Motivo: {{ registrodemanutencao_detail.motivo }}</p> 
+            <p class="card-text">Tipo Customização: {{ registrodemanutencao_detail.tipo_customizacao }}</p> 
+            <p class="card-text">Recebimento: {{ registrodemanutencao_detail.recebimento }}</p> 
+            <p class="card-text">Entregue por: {{ registrodemanutencao_detail.entregue_por_retirado_por }}</p> 
+            <p class="card-text">ID Equipamentos: {{ registrodemanutencao_detail.id_equipamentos }}</p> 
+            <p class="card-text">Eq Manutenção: {{ registrodemanutencao_detail.manutencaoequipamentos }}</p> 
+            <p class="card-text">Eq Retorno: {{ registrodemanutencao_detail.retornoequipamentos }}</p> 
+            <p class="card-text">Faturamento: {{ registrodemanutencao_detail.faturamento }}</p> 
+            <p class="card-text">Tipo Problema: {{ registrodemanutencao_detail.tipo_problema }}</p> 
+            <p class="card-text">Setor: {{ registrodemanutencao_detail.setor }}</p> 
+            <p class="card-text">Customização: {{ registrodemanutencao_detail.customizacao }}</p> 
+            <p class="card-text">Numero Equipamentos: {{ registrodemanutencao_detail.numero_equipamento }}</p> 
+            <p class="card-text">Tratativa: {{ registrodemanutencao_detail.tratativa }}</p> 
+            <p class="card-text">Status: {{ registrodemanutencao_detail.status }}</p>
+            <p class="card-text">Manutenção Equipamentos: {{ registrodemanutencao_detail.manutencaoequipamentos }}</p> 
+            <p class="card-text">Retorno Equipamentos: {{ registrodemanutencao_detail.retornoequipamentos }}</p> 
+
+            {% if registrodemanutencao_detail.arquivo %}
+                <a href="{{ registrodemanutencao_detail.arquivo.url }}" class="btn btn-primary" download>{{ registrodemanutencao_detail.arquivo.name }}</a>
+            {% else %}
+               
+            {% endif %}
+
+            {% if registrodemanutencao_detail.imagem %}
+                <p><img src="{{ registrodemanutencao_detail.imagem.url }}" alt="Descrição da imagem" width="450"></p>
+            {% endif %}
+            {% for imagem in registrodemanutencao_detail.imagens.all %}
+    
+    <p>ID: {{ imagem.descricao }}</p>
+    <p>Tipo de Problema: {{ imagem.tipo_problema }}</p>
+   
+
+
+            
+                <img src="{{ imagem.imagem.url }}" alt="Descrição da imagem" style="width: 500px; height: 250px;" />
+            
+            {% endfor %}
+        </div>
+    </div>
+
+    <div>
+        <a href="{% url 'entradasListView' %}" class="btn btn-secondary mt-3">Voltar</a>
+    </div>
+
+</div>
+
+{% endblock %}
